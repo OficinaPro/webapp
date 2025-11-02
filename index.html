@@ -1,0 +1,2566 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🚗 OficinaPro</title>
+    <style>
+        /* Reset e configurações básicas */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --accent-color: #e74c3c;
+            --success-color: #27ae60;
+            --warning-color: #f39c12;
+            --light-color: #ecf0f1;
+            --dark-color: #2c3e50;
+            --text-color: #333;
+            --bg-color: #f9f9f9;
+            --card-bg: #fff;
+            --shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            --border-radius: 8px;
+            --transition: all 0.3s ease;
+        }
+
+        .dark-theme {
+            --primary-color: #34495e;
+            --secondary-color: #2980b9;
+            --accent-color: #c0392b;
+            --success-color: #229954;
+            --warning-color: #d68910;
+            --light-color: #2c3e50;
+            --dark-color: #ecf0f1;
+            --text-color: #ecf0f1;
+            --bg-color: #1a1a2e;
+            --card-bg: #16213e;
+            --shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .blue-theme {
+            --primary-color: #1a5276;
+            --secondary-color: #3498db;
+            --accent-color: #e74c3c;
+            --success-color: #27ae60;
+            --warning-color: #f39c12;
+            --light-color: #d6eaf8;
+            --dark-color: #1a5276;
+            --text-color: #2c3e50;
+            --bg-color: #ebf5fb;
+            --card-bg: #ffffff;
+            --shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .green-theme {
+            --primary-color: #186a3b;
+            --secondary-color: #28b463;
+            --accent-color: #e74c3c;
+            --success-color: #229954;
+            --warning-color: #f39c12;
+            --light-color: #d5f5e3;
+            --dark-color: #186a3b;
+            --text-color: #2c3e50;
+            --bg-color: #eafaf1;
+            --card-bg: #ffffff;
+            --shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .orange-theme {
+            --primary-color: #ca6f1e;
+            --secondary-color: #e67e22;
+            --accent-color: #e74c3c;
+            --success-color: #27ae60;
+            --warning-color: #f39c12;
+            --light-color: #fdebd0;
+            --dark-color: #ca6f1e;
+            --text-color: #2c3e50;
+            --bg-color: #fef9e7;
+            --card-bg: #ffffff;
+            --shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            transition: var(--transition);
+            font-size: 16px;
+            padding-bottom: 70px;
+        }
+
+        /* Header e Menu Mobile */
+        header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        h1 {
+            font-size: 1.5rem;
+            margin: 0;
+        }
+
+        .menu-toggle {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 5px;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Menu Lateral Mobile */
+        .mobile-menu {
+            position: fixed;
+            top: 0;
+            right: -300px;
+            width: 280px;
+            height: 100vh;
+            background-color: var(--primary-color);
+            transition: var(--transition);
+            z-index: 1000;
+            box-shadow: -5px 0 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .mobile-menu.active {
+            right: 0;
+        }
+
+        .menu-header {
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .menu-close {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .menu-items {
+            padding: 20px 0;
+        }
+
+        .menu-item {
+            display: flex;
+            align-items: center;
+            padding: 15px 25px;
+            color: white;
+            text-decoration: none;
+            transition: var(--transition);
+            border-left: 4px solid transparent;
+            font-size: 16px;
+        }
+
+        .menu-item.active {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-left-color: var(--accent-color);
+        }
+
+        .menu-item:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .menu-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+            display: none;
+        }
+
+        .menu-overlay.active {
+            display: block;
+        }
+
+        /* Conteúdo das abas */
+        .tab-content {
+            display: none;
+            padding: 20px;
+            animation: fadeIn 0.5s;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* Cards e formulários */
+        .card {
+            background-color: var(--card-bg);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: var(--border-radius);
+            font-size: 16px;
+            background-color: var(--card-bg);
+            color: var(--text-color);
+            transition: var(--transition);
+        }
+
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: var(--secondary-color);
+            box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+        }
+
+        button {
+            background-color: var(--secondary-color);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: var(--transition);
+            display: inline-block;
+            text-align: center;
+        }
+
+        button:hover {
+            background-color: #2980b9;
+            transform: translateY(-2px);
+        }
+
+        button.danger {
+            background-color: var(--accent-color);
+        }
+
+        button.danger:hover {
+            background-color: #c0392b;
+        }
+
+        button.success {
+            background-color: var(--success-color);
+        }
+
+        button.success:hover {
+            background-color: #229954;
+        }
+
+        button.warning {
+            background-color: var(--warning-color);
+        }
+
+        button.warning:hover {
+            background-color: #d68910;
+        }
+
+        button.small {
+            padding: 8px 12px;
+            font-size: 14px;
+        }
+
+        /* Lista de serviços (vertical) */
+        .servicos-lista {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .servico-item {
+            background-color: var(--card-bg);
+            border-radius: var(--border-radius);
+            padding: 15px;
+            box-shadow: var(--shadow);
+            border-left: 4px solid var(--secondary-color);
+        }
+
+        .servico-item.cliente {
+            border-left-color: var(--warning-color);
+            background-color: rgba(243, 156, 18, 0.05);
+        }
+
+        .servico-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 10px;
+        }
+
+        .servico-descricao {
+            font-weight: 600;
+            flex: 1;
+        }
+
+        .servico-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .servico-detalhes {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .servico-info {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .servico-label {
+            font-size: 12px;
+            color: #666;
+            font-weight: 600;
+        }
+
+        .servico-valor {
+            font-weight: 600;
+            color: var(--success-color);
+        }
+
+        .edit-item, .remove-item {
+            cursor: pointer;
+            padding: 5px 8px;
+            border-radius: 4px;
+            transition: var(--transition);
+            font-size: 14px;
+        }
+
+        .edit-item {
+            background-color: rgba(52, 152, 219, 0.1);
+            color: var(--secondary-color);
+        }
+
+        .edit-item:hover {
+            background-color: rgba(52, 152, 219, 0.2);
+        }
+
+        .remove-item {
+            background-color: rgba(231, 76, 60, 0.1);
+            color: var(--accent-color);
+        }
+
+        .remove-item:hover {
+            background-color: rgba(231, 76, 60, 0.2);
+        }
+
+        /* Cards de estatísticas */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .stat-card {
+            background-color: var(--card-bg);
+            border-radius: var(--border-radius);
+            padding: 15px;
+            text-align: center;
+            box-shadow: var(--shadow);
+        }
+
+        .stat-value {
+            font-size: 24px;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+
+        /* Lista de orçamentos e clientes */
+        .orcamento-list, .client-list {
+            list-style: none;
+        }
+
+        .orcamento-item, .client-item {
+            background-color: var(--card-bg);
+            border-radius: var(--border-radius);
+            padding: 15px;
+            margin-bottom: 10px;
+            box-shadow: var(--shadow);
+        }
+
+        .orcamento-info h3, .client-info h3 {
+            margin-bottom: 5px;
+        }
+
+        .orcamento-status, .client-status {
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+            display: inline-block;
+            margin-right: 10px;
+        }
+
+        .status-pendente {
+            background-color: var(--warning-color);
+            color: white;
+        }
+
+        .status-realizado {
+            background-color: var(--success-color);
+            color: white;
+        }
+
+        .status-entregue {
+            background-color: var(--secondary-color);
+            color: white;
+        }
+
+        .orcamento-actions, .client-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+            flex-wrap: wrap;
+        }
+
+        /* Filtros */
+        .filtros {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .filtro-btn {
+            background-color: var(--light-color);
+            color: var(--text-color);
+            border: none;
+            padding: 8px 15px;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .filtro-btn.active {
+            background-color: var(--secondary-color);
+            color: white;
+        }
+
+        /* Configurações */
+        .settings-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+        }
+
+        .theme-selector {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .theme-option {
+            height: 60px;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            transition: var(--transition);
+        }
+
+        .theme-option:hover {
+            transform: scale(1.05);
+        }
+
+        .theme-option.active {
+            border: 3px solid var(--secondary-color);
+        }
+
+        /* Layout de formulário com colunas */
+        .form-row {
+            display: flex;
+            gap: 15px;
+        }
+
+        .form-col {
+            flex: 1;
+        }
+
+        /* Responsividade */
+        @media (min-width: 768px) {
+            .settings-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+            
+            .stats-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+            
+            .servico-detalhes {
+                grid-template-columns: 2fr 1fr 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 767px) {
+            .form-row {
+                flex-direction: column;
+                gap: 0;
+            }
+            
+            .orcamento-actions, .client-actions {
+                flex-direction: column;
+            }
+            
+            .filtros {
+                flex-direction: column;
+            }
+            
+            .servico-detalhes {
+                grid-template-columns: 1fr 1fr;
+            }
+            
+            .servico-header {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .servico-actions {
+                align-self: flex-end;
+            }
+        }
+
+        /* Utilitários */
+        .hidden {
+            display: none;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .mt-20 {
+            margin-top: 20px;
+        }
+
+        .mb-20 {
+            margin-bottom: 20px;
+        }
+
+        .flex {
+            display: flex;
+            gap: 10px;
+        }
+
+        .flex-1 {
+            flex: 1;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background-color: var(--card-bg);
+            border-radius: var(--border-radius);
+            width: 90%;
+            max-width: 500px;
+            padding: 20px;
+            box-shadow: var(--shadow);
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .close-modal {
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        /* Checkbox personalizado */
+        .checkbox-container {
+            display: flex;
+            align-items: center;
+            margin: 15px 0;
+            cursor: pointer;
+            padding: 12px 15px;
+            background-color: rgba(52, 152, 219, 0.1);
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+        }
+
+        .checkbox-container:hover {
+            background-color: rgba(52, 152, 219, 0.2);
+        }
+
+        .checkbox-container input {
+            width: auto;
+            margin-right: 10px;
+            transform: scale(1.2);
+        }
+
+        .checkbox-container label {
+            margin-bottom: 0;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        /* PDF Styles */
+        .pdf-container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .pdf-header {
+            text-align: center;
+            border-bottom: 2px solid #333;
+            padding-bottom: 20px;
+            margin-bottom: 20px;
+        }
+
+        .pdf-title {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .pdf-subtitle {
+            font-size: 18px;
+            color: #666;
+        }
+
+        .pdf-section {
+            margin-bottom: 20px;
+        }
+
+        .pdf-section-title {
+            font-size: 16px;
+            font-weight: bold;
+            background-color: #f5f5f5;
+            padding: 10px;
+            border-left: 4px solid #3498db;
+            margin-bottom: 10px;
+        }
+
+        .pdf-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 10px 0;
+        }
+
+        .pdf-table th {
+            background-color: #34495e;
+            color: white;
+            padding: 10px;
+            text-align: left;
+        }
+
+        .pdf-table td {
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .pdf-total {
+            text-align: right;
+            font-size: 18px;
+            font-weight: bold;
+            margin-top: 20px;
+            padding-top: 10px;
+            border-top: 2px solid #333;
+        }
+
+        .pdf-garantia {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+            border-left: 4px solid #27ae60;
+        }
+
+        .pdf-assinaturas {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 50px;
+            padding-top: 20px;
+            border-top: 1px solid #ddd;
+        }
+
+        .pdf-assinatura {
+            text-align: center;
+            width: 45%;
+        }
+
+        .pdf-linha-assinatura {
+            border-top: 1px solid #333;
+            margin-top: 60px;
+            padding-top: 5px;
+        }
+
+        /* Sistema de Busca de Clientes */
+        .resultados-busca {
+            border: 1px solid #ddd;
+            border-radius: var(--border-radius);
+            background-color: var(--card-bg);
+            box-shadow: var(--shadow);
+            margin-top: 10px;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        .resultados-header {
+            padding: 10px 15px;
+            background-color: var(--light-color);
+            font-weight: bold;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .lista-resultados {
+            max-height: 150px;
+            overflow-y: auto;
+        }
+
+        .item-resultado {
+            padding: 12px 15px;
+            border-bottom: 1px solid #eee;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .item-resultado:hover {
+            background-color: rgba(52, 152, 219, 0.1);
+        }
+
+        .item-resultado:last-child {
+            border-bottom: none;
+        }
+
+        .item-resultado .cliente-nome {
+            font-weight: bold;
+            margin-bottom: 3px;
+        }
+
+        .item-resultado .cliente-telefone {
+            font-size: 14px;
+            color: #666;
+        }
+
+        /* Botão para mostrar/ocultar lista completa */
+        .btn-lista-completa {
+            background-color: var(--light-color);
+            color: var(--text-color);
+            border: none;
+            padding: 8px 15px;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            margin: 10px 0;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .btn-lista-completa:hover {
+            background-color: #ddd;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header e Menu Mobile -->
+    <header>
+        <h1 id="app-title">🚗 OficinaPro</h1>
+        <button class="menu-toggle">☰</button>
+    </header>
+
+    <!-- Menu Lateral Mobile -->
+    <div class="mobile-menu">
+        <div class="menu-header">
+            <h3>Menu</h3>
+            <button class="menu-close">✕</button>
+        </div>
+        <div class="menu-items">
+            <a href="#" class="menu-item active" data-tab="novo-orcamento">
+                📝 Novo Orçamento
+            </a>
+            <a href="#" class="menu-item" data-tab="orcamentos">
+                📋 Orçamentos
+            </a>
+            <a href="#" class="menu-item" data-tab="clientes">
+                👥 Clientes
+            </a>
+            <a href="#" class="menu-item" data-tab="estatisticas">
+                📊 Estatísticas
+            </a>
+            <a href="#" class="menu-item" data-tab="configuracoes">
+                ⚙️ Configurações
+            </a>
+        </div>
+    </div>
+
+    <div class="menu-overlay"></div>
+
+    <!-- Conteúdo das abas -->
+    <div class="container">
+        <!-- Aba Novo Orçamento -->
+        <div id="novo-orcamento" class="tab-content active">
+            <div class="card">
+                <h2>Dados do Cliente</h2>
+                <div class="form-group">
+                    <label for="cliente-nome">Nome Completo</label>
+                    <input type="text" id="cliente-nome" placeholder="Nome do cliente">
+                </div>
+                <div class="form-group">
+                    <label for="cliente-telefone">Telefone *</label>
+                    <input type="tel" id="cliente-telefone" placeholder="(00) 00000-0000" required>
+                </div>
+                <div class="form-row">
+                    <div class="form-col">
+                        <div class="form-group">
+                            <label for="cliente-endereco">Endereço</label>
+                            <input type="text" id="cliente-endereco" placeholder="Rua, Avenida, etc.">
+                        </div>
+                    </div>
+                    <div class="form-col">
+                        <div class="form-group">
+                            <label for="cliente-numero">Número</label>
+                            <input type="text" id="cliente-numero" placeholder="Nº">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="cliente-bairro">Bairro</label>
+                    <input type="text" id="cliente-bairro" placeholder="Bairro">
+                </div>
+            </div>
+
+            <div class="card">
+                <h2>Dados do Veículo</h2>
+                <div class="form-group">
+                    <label for="veiculo-marca">Marca</label>
+                    <select id="veiculo-marca">
+                        <option value="">Selecione a marca</option>
+                        <option value="Chevrolet">Chevrolet</option>
+                        <option value="Fiat">Fiat</option>
+                        <option value="Ford">Ford</option>
+                        <option value="Honda">Honda</option>
+                        <option value="Hyundai">Hyundai</option>
+                        <option value="Toyota">Toyota</option>
+                        <option value="Volkswagen">Volkswagen</option>
+                        <option value="outra">Outra</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="veiculo-modelo">Modelo</label>
+                    <select id="veiculo-modelo">
+                        <option value="">Selecione o modelo</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="veiculo-placa">Placa do Veículo</label>
+                    <input type="text" id="veiculo-placa" placeholder="ABC-1234" maxlength="8">
+                </div>
+                <div class="form-group hidden" id="marca-manual-group">
+                    <label for="marca-manual">Informe a marca</label>
+                    <input type="text" id="marca-manual" placeholder="Digite a marca do veículo">
+                </div>
+                <div class="form-group hidden" id="modelo-manual-group">
+                    <label for="modelo-manual">Informe o modelo</label>
+                    <input type="text" id="modelo-manual" placeholder="Digite o modelo do veículo">
+                </div>
+            </div>
+
+            <div class="card">
+                <h2>Serviços e Peças</h2>
+                <div class="servicos-lista" id="servicos-lista">
+                    <!-- Itens serão adicionados dinamicamente aqui -->
+                </div>
+                <div class="flex">
+                    <button id="adicionar-servico" class="flex-1">+ Adicionar Serviço</button>
+                </div>
+                
+                <div class="checkbox-container">
+                    <input type="checkbox" id="peca-cliente">
+                    <label for="peca-cliente">Peça será adquirida pelo cliente</label>
+                </div>
+                
+                <div class="form-group mt-20">
+                    <label for="mao-obra">Mão de Obra</label>
+                    <input type="number" id="mao-obra" placeholder="0.00" min="0" step="0.01">
+                </div>
+                
+                <div class="form-group">
+                    <label for="garantia">Garantia do Serviço</label>
+                    <select id="garantia">
+                        <option value="">Selecione a garantia</option>
+                        <option value="30">30 dias</option>
+                        <option value="60">60 dias</option>
+                        <option value="90">90 dias</option>
+                        <option value="180">6 meses</option>
+                        <option value="365">1 ano</option>
+                        <option value="0">Sem garantia</option>
+                        <option value="outro">Outro</option>
+                    </select>
+                </div>
+                <div class="form-group hidden" id="garantia-manual-group">
+                    <label for="garantia-manual">Especificar garantia</label>
+                    <input type="text" id="garantia-manual" placeholder="Ex: 45 dias para motor, 1 ano para câmbio">
+                </div>
+                
+                <div class="form-group">
+                    <label for="observacoes">Observações</label>
+                    <textarea id="observacoes" rows="3" placeholder="Observações adicionais sobre o serviço"></textarea>
+                </div>
+                
+                <div class="card text-center">
+                    <h2>Total do Orçamento</h2>
+                    <div id="total-orcamento" class="stat-value">R$ 0,00</div>
+                </div>
+                
+                <div class="flex mt-20">
+                    <button id="finalizar-orcamento" class="success flex-1">Finalizar Orçamento</button>
+                    <button id="enviar-pdf-orcamento" class="warning flex-1">Enviar PDF Orçamento</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Aba Orçamentos -->
+        <div id="orcamentos" class="tab-content">
+            <div class="card">
+                <h2>Orçamentos</h2>
+                <div class="filtros">
+                    <button class="filtro-btn active" data-filtro="todos">Todos</button>
+                    <button class="filtro-btn" data-filtro="pendente">Pendentes</button>
+                    <button class="filtro-btn" data-filtro="realizado">Realizados</button>
+                    <button class="filtro-btn" data-filtro="entregue">Entregues</button>
+                </div>
+                <div id="lista-orcamentos">
+                    <!-- Orçamentos serão listados aqui -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Aba Clientes -->
+        <div id="clientes" class="tab-content">
+            <div class="card">
+                <h2>Cadastro de Clientes</h2>
+                <div class="form-group">
+                    <label for="novo-cliente-nome">Nome Completo</label>
+                    <input type="text" id="novo-cliente-nome" placeholder="Nome do cliente">
+                </div>
+                <div class="form-group">
+                    <label for="novo-cliente-telefone">Telefone</label>
+                    <input type="tel" id="novo-cliente-telefone" placeholder="(00) 00000-0000">
+                </div>
+                <div class="form-group">
+                    <label for="novo-cliente-email">E-mail</label>
+                    <input type="email" id="novo-cliente-email" placeholder="email@exemplo.com">
+                </div>
+                <div class="form-group">
+                    <label for="novo-cliente-observacoes">Observações</label>
+                    <textarea id="novo-cliente-observacoes" rows="3" placeholder="Observações sobre o cliente"></textarea>
+                </div>
+                <button id="salvar-cliente" class="success">Salvar Cliente</button>
+            </div>
+
+            <div class="card">
+                <h2>Buscar Clientes</h2>
+                <div class="form-group">
+                    <label for="buscar-cliente">Buscar por nome ou telefone:</label>
+                    <input type="text" id="buscar-cliente" placeholder="Digite para buscar...">
+                </div>
+                
+                <!-- Dropdown de resultados da busca -->
+                <div id="resultados-busca" class="resultados-busca" style="display: none;">
+                    <div class="resultados-header">Clientes encontrados:</div>
+                    <div id="lista-resultados" class="lista-resultados">
+                        <!-- Resultados aparecerão aqui -->
+                    </div>
+                </div>
+
+                <!-- Lista completa (oculta por padrão) -->
+                <div id="lista-completa-clientes" style="display: none;">
+                    <h3>Todos os Clientes</h3>
+                    <ul class="client-list" id="lista-clientes">
+                        <!-- Clientes serão listados aqui -->
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Aba Estatísticas -->
+        <div id="estatisticas" class="tab-content">
+            <div class="card">
+                <h2>Resumo Financeiro</h2>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div>Hoje</div>
+                        <div id="ganhos-hoje" class="stat-value">R$ 0,00</div>
+                    </div>
+                    <div class="stat-card">
+                        <div>Esta Semana</div>
+                        <div id="ganhos-semana" class="stat-value">R$ 0,00</div>
+                    </div>
+                    <div class="stat-card">
+                        <div>Este Mês</div>
+                        <div id="ganhos-mes" class="stat-value">R$ 0,00</div>
+                    </div>
+                    <div class="stat-card">
+                        <div>Este Ano</div>
+                        <div id="ganhos-ano" class="stat-value">R$ 0,00</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2>Status dos Serviços</h2>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div>Pendentes</div>
+                        <div id="servicos-pendentes" class="stat-value">0</div>
+                    </div>
+                    <div class="stat-card">
+                        <div>Realizados</div>
+                        <div id="servicos-realizados" class="stat-value">0</div>
+                    </div>
+                    <div class="stat-card">
+                        <div>Entregues</div>
+                        <div id="servicos-entregues" class="stat-value">0</div>
+                    </div>
+                    <div class="stat-card">
+                        <div>Total</div>
+                        <div id="servicos-total" class="stat-value">0</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Aba Configurações -->
+        <div id="configuracoes" class="tab-content">
+            <div class="card">
+                <h2>Dados da Oficina</h2>
+                <div class="form-group">
+                    <label for="oficina-nome">Nome da Oficina</label>
+                    <input type="text" id="oficina-nome" placeholder="Nome da sua oficina">
+                </div>
+                <div class="form-group">
+                    <label for="oficina-cnpj">CNPJ/CPF</label>
+                    <input type="text" id="oficina-cnpj" placeholder="CNPJ ou CPF">
+                </div>
+                <div class="form-row">
+                    <div class="form-col">
+                        <div class="form-group">
+                            <label for="oficina-endereco">Endereço</label>
+                            <input type="text" id="oficina-endereco" placeholder="Rua, Avenida, etc.">
+                        </div>
+                    </div>
+                    <div class="form-col">
+                        <div class="form-group">
+                            <label for="oficina-numero">Número</label>
+                            <input type="text" id="oficina-numero" placeholder="Nº">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="oficina-bairro">Bairro</label>
+                    <input type="text" id="oficina-bairro" placeholder="Bairro">
+                </div>
+                <div class="form-group">
+                    <label for="oficina-telefone">Telefone</label>
+                    <input type="text" id="oficina-telefone" placeholder="Telefone para contato">
+                </div>
+                <div class="form-group">
+                    <label for="oficina-email">E-mail</label>
+                    <input type="email" id="oficina-email" placeholder="E-mail da oficina">
+                </div>
+                <button id="salvar-dados-oficina" class="success">Salvar Dados</button>
+            </div>
+
+            <div class="card">
+                <h2>Aparência</h2>
+                <div class="form-group">
+                    <label>Tamanho da Fonte</label>
+                    <input type="range" id="tamanho-fonte" min="14" max="24" value="16">
+                    <div id="valor-fonte">16px</div>
+                </div>
+                
+                <div class="form-group">
+                    <label>Tema</label>
+                    <div class="theme-selector">
+                        <div class="theme-option active" data-theme="light" style="background-color: #f9f9f9; color: #333;">Claro</div>
+                        <div class="theme-option" data-theme="dark" style="background-color: #1a1a2e; color: #ecf0f1;">Escuro</div>
+                        <div class="theme-option" data-theme="blue" style="background-color: #3498db; color: white;">Azul</div>
+                        <div class="theme-option" data-theme="green" style="background-color: #27ae60; color: white;">Verde</div>
+                        <div class="theme-option" data-theme="orange" style="background-color: #e67e22; color: white;">Laranja</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2>Gerenciamento de Dados</h2>
+                <div class="flex">
+                    <button id="exportar-dados" class="flex-1">Exportar Dados</button>
+                    <button id="importar-dados" class="flex-1">Importar Dados</button>
+                </div>
+                <div class="flex mt-20">
+                    <button id="limpar-dados" class="danger flex-1">Limpar Todos os Dados</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para adicionar/editar serviço -->
+    <div id="modal-servico" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modal-servico-titulo">Adicionar Serviço/Peça</h2>
+                <span class="close-modal">&times;</span>
+            </div>
+            <div class="form-group">
+                <label for="servico-descricao">Descrição</label>
+                <input type="text" id="servico-descricao" placeholder="Descrição do serviço ou peça">
+            </div>
+            <div class="form-group">
+                <label for="servico-quantidade">Quantidade</label>
+                <input type="number" id="servico-quantidade" value="1" min="1">
+            </div>
+            <div class="form-group">
+                <label for="servico-valor">Valor Unitário (R$)</label>
+                <input type="number" id="servico-valor" placeholder="0.00" min="0" step="0.01">
+            </div>
+            <div class="checkbox-container">
+                <input type="checkbox" id="modal-peca-cliente">
+                <label for="modal-peca-cliente">Peça será adquirida pelo cliente</label>
+            </div>
+            <div class="flex">
+                <button id="salvar-item" class="success flex-1">Salvar</button>
+                <button id="cancelar-edicao" class="warning flex-1 hidden">Cancelar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para marcar como realizado -->
+    <div id="modal-realizado" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Marcar Serviço como Realizado</h2>
+                <span class="close-modal">&times;</span>
+            </div>
+            <div class="form-group">
+                <label for="data-conclusao">Data de Conclusão</label>
+                <input type="date" id="data-conclusao">
+            </div>
+            <div class="form-group">
+                <label for="observacoes-conclusao">Observações da Conclusão</label>
+                <textarea id="observacoes-conclusao" rows="3" placeholder="Detalhes sobre o serviço realizado"></textarea>
+            </div>
+            <div class="flex">
+                <button id="confirmar-realizado" class="success flex-1">Confirmar</button>
+                <button id="cancelar-realizado" class="warning flex-1">Cancelar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para visualizar PDF -->
+    <div id="modal-pdf" class="modal">
+        <div class="modal-content" style="max-width: 800px;">
+            <div class="modal-header">
+                <h2>Pré-visualização do PDF</h2>
+                <span class="close-modal">&times;</span>
+            </div>
+            <div id="pdf-preview">
+                <!-- Conteúdo do PDF será gerado aqui -->
+            </div>
+            <div class="flex mt-20">
+                <button id="enviar-pdf-whatsapp" class="success flex-1">Enviar por WhatsApp</button>
+                <button id="fechar-pdf" class="warning flex-1">Fechar</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Dados iniciais da aplicação
+        let dadosApp = {
+            orcamentos: [],
+            clientes: [],
+            oficina: {
+                nome: "🚗 OficinaPro",
+                cnpj: "",
+                endereco: "",
+                numero: "",
+                bairro: "",
+                telefone: "",
+                email: ""
+            },
+            configuracoes: {
+                tema: "light",
+                tamanhoFonte: 16
+            }
+        };
+
+        // Modelos de veículos por marca
+        const modelosVeiculos = {
+            Chevrolet: ["Onix", "Prisma", "Cruze", "S10", "Tracker", "Spin"],
+            Fiat: ["Uno", "Palio", "Strada", "Toro", "Mobi", "Argo"],
+            Ford: ["Ka", "Fiesta", "Focus", "Ranger", "EcoSport"],
+            Honda: ["Civic", "Fit", "HR-V", "CR-V", "City"],
+            Hyundai: ["HB20", "Creta", "Tucson", "Santa Fe"],
+            Toyota: ["Corolla", "Etios", "Hilux", "SW4", "Yaris"],
+            Volkswagen: ["Gol", "Polo", "Virtus", "T-Cross", "Amarok"]
+        };
+
+        // Opções de garantia
+        const opcoesGarantia = {
+            "30": "30 dias",
+            "60": "60 dias", 
+            "90": "90 dias",
+            "180": "6 meses",
+            "365": "1 ano",
+            "0": "Sem garantia",
+            "outro": "Outro"
+        };
+
+        // Variáveis para controle
+        let editandoItemId = null;
+        let servicosTemporarios = [];
+        let orcamentoEditandoId = null;
+        let orcamentoMarcandoRealizado = null;
+        let pdfAtual = null;
+
+        // Inicialização da aplicação
+        document.addEventListener('DOMContentLoaded', function() {
+            carregarDados();
+            inicializarMenuMobile();
+            inicializarFormularios();
+            atualizarInterface();
+        });
+
+        // Menu Mobile
+        function inicializarMenuMobile() {
+            const menuToggle = document.querySelector('.menu-toggle');
+            const menuClose = document.querySelector('.menu-close');
+            const mobileMenu = document.querySelector('.mobile-menu');
+            const menuOverlay = document.querySelector('.menu-overlay');
+            const menuItems = document.querySelectorAll('.menu-item');
+
+            if (menuToggle && mobileMenu && menuOverlay) {
+                menuToggle.addEventListener('click', function() {
+                    mobileMenu.classList.add('active');
+                    menuOverlay.classList.add('active');
+                });
+
+                if (menuClose) {
+                    menuClose.addEventListener('click', function() {
+                        mobileMenu.classList.remove('active');
+                        menuOverlay.classList.remove('active');
+                    });
+                }
+
+                menuOverlay.addEventListener('click', function() {
+                    mobileMenu.classList.remove('active');
+                    menuOverlay.classList.remove('active');
+                });
+
+                menuItems.forEach(item => {
+                    item.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        const tab = this.getAttribute('data-tab');
+                        
+                        menuItems.forEach(i => i.classList.remove('active'));
+                        this.classList.add('active');
+                        
+                        document.querySelectorAll('.tab-content').forEach(content => {
+                            content.classList.remove('active');
+                        });
+                        
+                        const tabElement = document.getElementById(tab);
+                        if (tabElement) {
+                            tabElement.classList.add('active');
+                        }
+                        
+                        mobileMenu.classList.remove('active');
+                        menuOverlay.classList.remove('active');
+
+                        // Atualizar conteúdo específico da aba
+                        if (tab === 'orcamentos') {
+                            carregarListaOrcamentos();
+                        } else if (tab === 'clientes') {
+                            carregarListaClientes();
+                        } else if (tab === 'estatisticas') {
+                            atualizarEstatisticas();
+                        }
+                    });
+                });
+            }
+        }
+
+        // Carregar dados do localStorage
+        function carregarDados() {
+            const dadosSalvos = localStorage.getItem('oficinaPro');
+            if (dadosSalvos) {
+                dadosApp = JSON.parse(dadosSalvos);
+                document.getElementById('app-title').textContent = dadosApp.oficina.nome;
+                aplicarTema(dadosApp.configuracoes.tema);
+                document.body.style.fontSize = dadosApp.configuracoes.tamanhoFonte + 'px';
+                document.getElementById('tamanho-fonte').value = dadosApp.configuracoes.tamanhoFonte;
+                document.getElementById('valor-fonte').textContent = dadosApp.configuracoes.tamanhoFonte + 'px';
+                
+                document.getElementById('oficina-nome').value = dadosApp.oficina.nome;
+                document.getElementById('oficina-cnpj').value = dadosApp.oficina.cnpj;
+                document.getElementById('oficina-endereco').value = dadosApp.oficina.endereco;
+                document.getElementById('oficina-numero').value = dadosApp.oficina.numero;
+                document.getElementById('oficina-bairro').value = dadosApp.oficina.bairro;
+                document.getElementById('oficina-telefone').value = dadosApp.oficina.telefone;
+                document.getElementById('oficina-email').value = dadosApp.oficina.email;
+            }
+        }
+
+        // Salvar dados no localStorage
+        function salvarDados() {
+            localStorage.setItem('oficinaPro', JSON.stringify(dadosApp));
+        }
+
+        // Aplicar tema
+        function aplicarTema(tema) {
+            document.body.classList.remove('light-theme', 'dark-theme', 'blue-theme', 'green-theme', 'orange-theme');
+            if (tema !== 'light') {
+                document.body.classList.add(tema + '-theme');
+            }
+        }
+
+        // Inicializar formulários e eventos
+        function inicializarFormularios() {
+            // Seleção de marca e modelo
+            document.getElementById('veiculo-marca').addEventListener('change', function() {
+                const marca = this.value;
+                const modeloSelect = document.getElementById('veiculo-modelo');
+                const marcaManualGroup = document.getElementById('marca-manual-group');
+                const modeloManualGroup = document.getElementById('modelo-manual-group');
+                
+                modeloSelect.innerHTML = '<option value="">Selecione o modelo</option>';
+                
+                if (marca === 'outra') {
+                    marcaManualGroup.classList.remove('hidden');
+                    modeloManualGroup.classList.remove('hidden');
+                    modeloSelect.disabled = true;
+                } else {
+                    marcaManualGroup.classList.add('hidden');
+                    modeloManualGroup.classList.add('hidden');
+                    modeloSelect.disabled = false;
+                    
+                    if (marca && modelosVeiculos[marca]) {
+                        modelosVeiculos[marca].forEach(modelo => {
+                            const option = document.createElement('option');
+                            option.value = modelo;
+                            option.textContent = modelo;
+                            modeloSelect.appendChild(option);
+                        });
+                    }
+                }
+            });
+
+            // Seleção de garantia
+            document.getElementById('garantia').addEventListener('change', function() {
+                const garantiaManualGroup = document.getElementById('garantia-manual-group');
+                if (this.value === 'outro') {
+                    garantiaManualGroup.classList.remove('hidden');
+                } else {
+                    garantiaManualGroup.classList.add('hidden');
+                }
+            });
+
+            // Adicionar serviço
+            document.getElementById('adicionar-servico').addEventListener('click', function() {
+                abrirModalServico();
+            });
+
+            // Fechar modal
+            document.querySelectorAll('.close-modal').forEach(closeBtn => {
+                closeBtn.addEventListener('click', function() {
+                    this.closest('.modal').style.display = 'none';
+                    if (this.closest('#modal-servico')) {
+                        cancelarEdicao();
+                    }
+                });
+            });
+
+            // Salvar item
+            document.getElementById('salvar-item').addEventListener('click', salvarServico);
+
+            // Cancelar edição
+            document.getElementById('cancelar-edicao').addEventListener('click', cancelarEdicao);
+
+            // Confirmar realizado
+            document.getElementById('confirmar-realizado').addEventListener('click', confirmarRealizado);
+
+            // Cancelar realizado
+            document.getElementById('cancelar-realizado').addEventListener('click', function() {
+                document.getElementById('modal-realizado').style.display = 'none';
+                orcamentoMarcandoRealizado = null;
+            });
+
+            // Calcular total
+            document.getElementById('mao-obra').addEventListener('input', calcularTotal);
+
+            // Finalizar orçamento
+            document.getElementById('finalizar-orcamento').addEventListener('click', finalizarOrcamento);
+
+            // Enviar PDF Orçamento
+            document.getElementById('enviar-pdf-orcamento').addEventListener('click', function() {
+                if (servicosTemporarios.length === 0) {
+                    alert('Adicione serviços/peças antes de gerar o PDF.');
+                    return;
+                }
+                
+                const orcamentoTemp = criarOrcamentoTemporario();
+                mostrarPDF(orcamentoTemp, 'orcamento');
+            });
+
+            // Enviar PDF WhatsApp
+            document.getElementById('enviar-pdf-whatsapp').addEventListener('click', enviarPDFWhatsApp);
+            
+            // Fechar PDF
+            document.getElementById('fechar-pdf').addEventListener('click', function() {
+                document.getElementById('modal-pdf').style.display = 'none';
+            });
+
+            // Salvar dados oficina
+            document.getElementById('salvar-dados-oficina').addEventListener('click', salvarDadosOficina);
+
+            // Tamanho da fonte
+            document.getElementById('tamanho-fonte').addEventListener('input', function() {
+                const tamanho = this.value;
+                document.body.style.fontSize = tamanho + 'px';
+                document.getElementById('valor-fonte').textContent = tamanho + 'px';
+                dadosApp.configuracoes.tamanhoFonte = parseInt(tamanho);
+                salvarDados();
+            });
+
+            // Temas
+            document.querySelectorAll('.theme-option').forEach(option => {
+                option.addEventListener('click', function() {
+                    const tema = this.getAttribute('data-theme');
+                    aplicarTema(tema);
+                    document.querySelectorAll('.theme-option').forEach(opt => opt.classList.remove('active'));
+                    this.classList.add('active');
+                    dadosApp.configuracoes.tema = tema;
+                    salvarDados();
+                });
+            });
+
+            // Gerenciamento de dados
+            document.getElementById('exportar-dados').addEventListener('click', exportarDados);
+            document.getElementById('importar-dados').addEventListener('click', importarDados);
+            document.getElementById('limpar-dados').addEventListener('click', limparDados);
+
+            // Filtros
+            document.querySelectorAll('.filtro-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    document.querySelectorAll('.filtro-btn').forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    const filtro = this.getAttribute('data-filtro');
+                    filtrarOrcamentos(filtro);
+                });
+            });
+
+            // Salvar cliente
+            document.getElementById('salvar-cliente').addEventListener('click', salvarCliente);
+
+            // Sistema de busca de clientes
+            inicializarBuscaClientes();
+        }
+
+        // Abrir modal serviço
+        function abrirModalServico(servico = null) {
+            const modal = document.getElementById('modal-servico');
+            const titulo = document.getElementById('modal-servico-titulo');
+            const cancelarBtn = document.getElementById('cancelar-edicao');
+            
+            if (servico) {
+                titulo.textContent = 'Editar Serviço/Peça';
+                document.getElementById('servico-descricao').value = servico.descricao;
+                document.getElementById('servico-quantidade').value = servico.quantidade;
+                document.getElementById('servico-valor').value = servico.valorUnitario;
+                document.getElementById('modal-peca-cliente').checked = servico.clienteAdquire;
+                editandoItemId = servico.id;
+                cancelarBtn.classList.remove('hidden');
+            } else {
+                titulo.textContent = 'Adicionar Serviço/Peça';
+                document.getElementById('servico-descricao').value = '';
+                document.getElementById('servico-quantidade').value = 1;
+                document.getElementById('servico-valor').value = '';
+                document.getElementById('modal-peca-cliente').checked = false;
+                editandoItemId = null;
+                cancelarBtn.classList.add('hidden');
+            }
+            
+            modal.style.display = 'flex';
+        }
+
+        // Salvar serviço
+        function salvarServico() {
+            const descricao = document.getElementById('servico-descricao').value;
+            const quantidade = parseInt(document.getElementById('servico-quantidade').value);
+            const valor = parseFloat(document.getElementById('servico-valor').value);
+            const clienteAdquire = document.getElementById('modal-peca-cliente').checked;
+            
+            if (!descricao || !quantidade || !valor) {
+                alert('Por favor, preencha todos os campos obrigatórios.');
+                return;
+            }
+            
+            if (editandoItemId) {
+                atualizarServico(editandoItemId, descricao, quantidade, valor, clienteAdquire);
+            } else {
+                adicionarServico(descricao, quantidade, valor, clienteAdquire);
+            }
+            
+            document.getElementById('modal-servico').style.display = 'none';
+            document.getElementById('servico-descricao').value = '';
+            document.getElementById('servico-quantidade').value = 1;
+            document.getElementById('servico-valor').value = '';
+            document.getElementById('modal-peca-cliente').checked = false;
+            
+            calcularTotal();
+        }
+
+        // Cancelar edição
+        function cancelarEdicao() {
+            document.getElementById('modal-servico').style.display = 'none';
+            editandoItemId = null;
+            document.getElementById('cancelar-edicao').classList.add('hidden');
+        }
+
+        // Adicionar serviço
+        function adicionarServico(descricao, quantidade, valor, clienteAdquire) {
+            const id = Date.now();
+            const servico = {
+                id: id,
+                descricao: descricao,
+                quantidade: quantidade,
+                valorUnitario: valor,
+                clienteAdquire: clienteAdquire,
+                subtotal: quantidade * valor
+            };
+            
+            servicosTemporarios.push(servico);
+            atualizarListaServicos();
+        }
+
+        // Atualizar serviço
+        function atualizarServico(id, descricao, quantidade, valor, clienteAdquire) {
+            const servicoIndex = servicosTemporarios.findIndex(s => s.id === id);
+            if (servicoIndex !== -1) {
+                servicosTemporarios[servicoIndex] = {
+                    id: id,
+                    descricao: descricao,
+                    quantidade: quantidade,
+                    valorUnitario: valor,
+                    clienteAdquire: clienteAdquire,
+                    subtotal: quantidade * valor
+                };
+                atualizarListaServicos();
+            }
+        }
+
+        // Atualizar lista de serviços
+        function atualizarListaServicos() {
+            const lista = document.getElementById('servicos-lista');
+            lista.innerHTML = '';
+            
+            servicosTemporarios.forEach(servico => {
+                const item = document.createElement('div');
+                item.className = `servico-item ${servico.clienteAdquire ? 'cliente' : ''}`;
+                item.setAttribute('data-id', servico.id);
+                
+                item.innerHTML = `
+                    <div class="servico-header">
+                        <div class="servico-descricao">
+                            ${servico.descricao} ${servico.clienteAdquire ? '(Peça do Cliente)' : ''}
+                        </div>
+                        <div class="servico-actions">
+                            <span class="edit-item">✏️ Editar</span>
+                            <span class="remove-item">🗑️ Remover</span>
+                        </div>
+                    </div>
+                    <div class="servico-detalhes">
+                        <div class="servico-info">
+                            <span class="servico-label">Quantidade</span>
+                            <span>${servico.quantidade}</span>
+                        </div>
+                        <div class="servico-info">
+                            <span class="servico-label">Valor Unitário</span>
+                            <span class="servico-valor">R$ ${servico.valorUnitario.toFixed(2)}</span>
+                        </div>
+                        <div class="servico-info">
+                            <span class="servico-label">Subtotal</span>
+                            <span class="servico-valor">${servico.clienteAdquire ? 'R$ 0,00' : `R$ ${servico.subtotal.toFixed(2)}`}</span>
+                        </div>
+                    </div>
+                `;
+                
+                lista.appendChild(item);
+                
+                item.querySelector('.edit-item').addEventListener('click', function() {
+                    const servicoParaEditar = servicosTemporarios.find(s => s.id === servico.id);
+                    if (servicoParaEditar) {
+                        abrirModalServico(servicoParaEditar);
+                    }
+                });
+                
+                item.querySelector('.remove-item').addEventListener('click', function() {
+                    servicosTemporarios = servicosTemporarios.filter(s => s.id !== servico.id);
+                    atualizarListaServicos();
+                    calcularTotal();
+                });
+            });
+        }
+
+        // Calcular total
+        function calcularTotal() {
+            let totalServicos = 0;
+            
+            servicosTemporarios.forEach(servico => {
+                if (!servico.clienteAdquire) {
+                    totalServicos += servico.subtotal;
+                }
+            });
+            
+            const maoObra = parseFloat(document.getElementById('mao-obra').value) || 0;
+            const total = totalServicos + maoObra;
+            
+            document.getElementById('total-orcamento').textContent = `R$ ${total.toFixed(2)}`;
+            
+            return total;
+        }
+
+        // Criar orçamento temporário
+        function criarOrcamentoTemporario() {
+            return {
+                cliente: {
+                    nome: document.getElementById('cliente-nome').value || 'NÃO INFORMADO',
+                    telefone: document.getElementById('cliente-telefone').value || 'NÃO INFORMADO',
+                    endereco: document.getElementById('cliente-endereco').value || '',
+                    numero: document.getElementById('cliente-numero').value || '',
+                    bairro: document.getElementById('cliente-bairro').value || ''
+                },
+                veiculo: {
+                    marca: document.getElementById('veiculo-marca').value || 'NÃO INFORMADA',
+                    modelo: document.getElementById('veiculo-modelo').value || 'NÃO INFORMADO',
+                    placa: document.getElementById('veiculo-placa').value || ''
+                },
+                servicos: [...servicosTemporarios],
+                maoObra: parseFloat(document.getElementById('mao-obra').value) || 0,
+                garantia: document.getElementById('garantia').value === 'outro' 
+                    ? document.getElementById('garantia-manual').value 
+                    : opcoesGarantia[document.getElementById('garantia').value],
+                observacoes: document.getElementById('observacoes').value,
+                total: calcularTotal(),
+                data: new Date().toISOString(),
+                status: 'pendente'
+            };
+        }
+
+        // Finalizar orçamento
+        function finalizarOrcamento() {
+            const clienteNome = document.getElementById('cliente-nome').value;
+            const clienteTelefone = document.getElementById('cliente-telefone').value;
+            
+            if (!clienteNome || !clienteTelefone) {
+                alert('Por favor, preencha pelo menos nome e telefone do cliente.');
+                return;
+            }
+            
+            if (servicosTemporarios.length === 0) {
+                alert('Adicione pelo menos um serviço ou peça ao orçamento.');
+                return;
+            }
+            
+            const orcamento = criarOrcamentoTemporario();
+            orcamento.id = orcamentoEditandoId || Date.now();
+            
+            if (orcamentoEditandoId) {
+                const index = dadosApp.orcamentos.findIndex(o => o.id === orcamentoEditandoId);
+                if (index !== -1) {
+                    dadosApp.orcamentos[index] = orcamento;
+                }
+            } else {
+                dadosApp.orcamentos.push(orcamento);
+            }
+            
+            // Adicionar/atualizar cliente
+            let clienteExistente = dadosApp.clientes.find(c => c.telefone === clienteTelefone);
+            if (!clienteExistente) {
+                dadosApp.clientes.push({
+                    nome: clienteNome,
+                    telefone: clienteTelefone,
+                    email: '',
+                    observacoes: '',
+                    dataCadastro: new Date().toISOString()
+                });
+            }
+            
+            salvarDados();
+            limparFormularioOrcamento();
+            
+            alert(orcamentoEditandoId ? 'Orçamento atualizado com sucesso!' : 'Orçamento finalizado com sucesso!');
+            
+            // Ir para aba Orçamentos
+            document.querySelectorAll('.menu-item').forEach(item => item.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            document.querySelector('[data-tab="orcamentos"]').classList.add('active');
+            document.getElementById('orcamentos').classList.add('active');
+            
+            carregarListaOrcamentos();
+        }
+
+        // Limpar formulário
+        function limparFormularioOrcamento() {
+            document.getElementById('cliente-nome').value = '';
+            document.getElementById('cliente-telefone').value = '';
+            document.getElementById('cliente-endereco').value = '';
+            document.getElementById('cliente-numero').value = '';
+            document.getElementById('cliente-bairro').value = '';
+            document.getElementById('veiculo-marca').value = '';
+            document.getElementById('veiculo-modelo').value = '';
+            document.getElementById('veiculo-placa').value = '';
+            document.getElementById('marca-manual').value = '';
+            document.getElementById('modelo-manual').value = '';
+            document.getElementById('mao-obra').value = '';
+            document.getElementById('garantia').value = '';
+            document.getElementById('garantia-manual').value = '';
+            document.getElementById('observacoes').value = '';
+            document.getElementById('peca-cliente').checked = false;
+            servicosTemporarios = [];
+            atualizarListaServicos();
+            document.getElementById('total-orcamento').textContent = 'R$ 0,00';
+            orcamentoEditandoId = null;
+        }
+
+        // Carregar lista de orçamentos
+        function carregarListaOrcamentos() {
+            const listaOrcamentos = document.getElementById('lista-orcamentos');
+            listaOrcamentos.innerHTML = '';
+            
+            const orcamentosOrdenados = [...dadosApp.orcamentos].sort((a, b) => 
+                new Date(b.data) - new Date(a.data)
+            );
+            
+            orcamentosOrdenados.forEach(orcamento => {
+                const dataFormatada = new Date(orcamento.data).toLocaleDateString('pt-BR');
+                const item = document.createElement('div');
+                item.className = 'orcamento-item';
+                item.setAttribute('data-status', orcamento.status);
+                
+                let botoes = '';
+                if (orcamento.status === 'pendente') {
+                    botoes = `
+                        <button class="success small" onclick="marcarComoRealizado(${orcamento.id})">Realizado</button>
+                        <button class="small" onclick="editarOrcamento(${orcamento.id})">Editar</button>
+                        <button class="small" onclick="mostrarPDF(${JSON.stringify(orcamento).replace(/"/g, '&quot;')}, 'orcamento')">PDF Orçamento</button>
+                    `;
+                } else if (orcamento.status === 'realizado') {
+                    botoes = `
+                        <button class="success small" onclick="marcarComoEntregue(${orcamento.id})">Entregue</button>
+                        <button class="small" onclick="mostrarPDF(${JSON.stringify(orcamento).replace(/"/g, '&quot;')}, 'servico-concluido')">PDF Serviço</button>
+                    `;
+                } else if (orcamento.status === 'entregue') {
+                    botoes = `
+                        <button class="small" onclick="mostrarPDF(${JSON.stringify(orcamento).replace(/"/g, '&quot;')}, 'servico-concluido')">PDF Serviço</button>
+                    `;
+                }
+                
+                item.innerHTML = `
+                    <div class="orcamento-info">
+                        <h3>${orcamento.cliente.nome}</h3>
+                        <p>${orcamento.veiculo.marca} ${orcamento.veiculo.modelo} - ${orcamento.veiculo.placa || 'Sem placa'}</p>
+                        <p>${dataFormatada} - R$ ${orcamento.total.toFixed(2)}</p>
+                        <span class="orcamento-status status-${orcamento.status}">${orcamento.status}</span>
+                    </div>
+                    <div class="orcamento-actions">
+                        <button class="small" onclick="enviarOrcamentoWhatsApp(${JSON.stringify(orcamento).replace(/"/g, '&quot;')})">WhatsApp</button>
+                        ${botoes}
+                    </div>
+                `;
+                
+                listaOrcamentos.appendChild(item);
+            });
+        }
+
+        // Funções globais para os botões
+        window.marcarComoRealizado = function(orcamentoId) {
+            orcamentoMarcandoRealizado = dadosApp.orcamentos.find(o => o.id === orcamentoId);
+            if (orcamentoMarcandoRealizado) {
+                document.getElementById('data-conclusao').valueAsDate = new Date();
+                document.getElementById('observacoes-conclusao').value = '';
+                document.getElementById('modal-realizado').style.display = 'flex';
+            }
+        };
+
+        window.marcarComoEntregue = function(orcamentoId) {
+            if (confirm('Deseja marcar este serviço como entregue?')) {
+                const orcamento = dadosApp.orcamentos.find(o => o.id === orcamentoId);
+                if (orcamento) {
+                    orcamento.status = 'entregue';
+                    salvarDados();
+                    carregarListaOrcamentos();
+                    alert('Serviço marcado como entregue com sucesso!');
+                }
+            }
+        };
+
+        window.editarOrcamento = function(orcamentoId) {
+            const orcamento = dadosApp.orcamentos.find(o => o.id === orcamentoId);
+            if (orcamento) {
+                // Preencher formulário
+                document.getElementById('cliente-nome').value = orcamento.cliente.nome;
+                document.getElementById('cliente-telefone').value = orcamento.cliente.telefone;
+                document.getElementById('cliente-endereco').value = orcamento.cliente.endereco;
+                document.getElementById('cliente-numero').value = orcamento.cliente.numero;
+                document.getElementById('cliente-bairro').value = orcamento.cliente.bairro;
+                
+                document.getElementById('veiculo-marca').value = orcamento.veiculo.marca;
+                document.getElementById('veiculo-marca').dispatchEvent(new Event('change'));
+                setTimeout(() => {
+                    document.getElementById('veiculo-modelo').value = orcamento.veiculo.modelo;
+                }, 100);
+                
+                document.getElementById('veiculo-placa').value = orcamento.veiculo.placa;
+                document.getElementById('mao-obra').value = orcamento.maoObra;
+                document.getElementById('observacoes').value = orcamento.observacoes;
+                
+                // Carregar serviços
+                servicosTemporarios = [...orcamento.servicos];
+                atualizarListaServicos();
+                calcularTotal();
+                
+                // Definir ID do orçamento sendo editado
+                orcamentoEditandoId = orcamento.id;
+                
+                // Mudar para aba Novo Orçamento
+                document.querySelectorAll('.menu-item').forEach(item => item.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+                document.querySelector('[data-tab="novo-orcamento"]').classList.add('active');
+                document.getElementById('novo-orcamento').classList.add('active');
+                
+                alert('Orçamento carregado para edição. Faça as alterações necessárias e clique em "Finalizar Orçamento" para salvar.');
+            }
+        };
+
+        window.enviarOrcamentoWhatsApp = function(orcamento) {
+            const telefone = orcamento.cliente.telefone;
+            let mensagem = `*ORÇAMENTO - ${dadosApp.oficina.nome}*\n\n`;
+            mensagem += `*Cliente:* ${orcamento.cliente.nome}\n`;
+            mensagem += `*Veículo:* ${orcamento.veiculo.marca} ${orcamento.veiculo.modelo}\n`;
+            mensagem += `*Placa:* ${orcamento.veiculo.placa || 'NÃO INFORMADA'}\n\n`;
+            mensagem += `*Serviços/Peças:*\n`;
+            
+            orcamento.servicos.forEach(servico => {
+                const subtotal = servico.clienteAdquire ? 0 : servico.subtotal;
+                mensagem += `- ${servico.descricao}${servico.clienteAdquire ? ' (Cliente)' : ''}: ${servico.quantidade} x R$ ${servico.valorUnitario.toFixed(2)} = R$ ${subtotal.toFixed(2)}\n`;
+            });
+            
+            if (orcamento.maoObra > 0) {
+                mensagem += `Mão de obra: R$ ${orcamento.maoObra.toFixed(2)}\n`;
+            }
+            
+            mensagem += `\n*TOTAL: R$ ${orcamento.total.toFixed(2)}*`;
+            
+            const mensagemCodificada = encodeURIComponent(mensagem);
+            window.open(`https://wa.me/55${telefone.replace(/\D/g, '')}?text=${mensagemCodificada}`, '_blank');
+        };
+
+        // Confirmar realizado
+        function confirmarRealizado() {
+            if (!orcamentoMarcandoRealizado) return;
+            
+            const dataConclusao = document.getElementById('data-conclusao').value;
+            const observacoes = document.getElementById('observacoes-conclusao').value;
+            
+            if (!dataConclusao) {
+                alert('Por favor, informe a data de conclusão.');
+                return;
+            }
+            
+            const orcamento = dadosApp.orcamentos.find(o => o.id === orcamentoMarcandoRealizado.id);
+            if (orcamento) {
+                orcamento.status = 'realizado';
+                orcamento.dataConclusao = dataConclusao;
+                orcamento.observacoesConclusao = observacoes;
+                
+                salvarDados();
+                carregarListaOrcamentos();
+                
+                alert('Serviço marcado como realizado com sucesso!');
+            }
+            
+            document.getElementById('modal-realizado').style.display = 'none';
+            orcamentoMarcandoRealizado = null;
+        }
+
+        // Filtrar orçamentos
+        function filtrarOrcamentos(filtro) {
+            const orcamentos = document.querySelectorAll('.orcamento-item');
+            orcamentos.forEach(item => {
+                const status = item.getAttribute('data-status');
+                if (filtro === 'todos' || status === filtro) {
+                    item.style.display = 'block';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        }
+
+        // Carregar lista de clientes (agora com busca)
+        function carregarListaClientes() {
+            const listaClientes = document.getElementById('lista-clientes');
+            listaClientes.innerHTML = '';
+            
+            dadosApp.clientes.forEach(cliente => {
+                const dataFormatada = new Date(cliente.dataCadastro).toLocaleDateString('pt-BR');
+                const item = document.createElement('li');
+                item.className = 'client-item';
+                item.setAttribute('data-id', cliente.telefone);
+                
+                item.innerHTML = `
+                    <div class="client-info">
+                        <h3>${cliente.nome}</h3>
+                        <p>${cliente.telefone} ${cliente.email ? `- ${cliente.email}` : ''}</p>
+                        <p>Cadastrado em: ${dataFormatada}</p>
+                        ${cliente.observacoes ? `<p>Observações: ${cliente.observacoes}</p>` : ''}
+                    </div>
+                    <div class="client-actions">
+                        <button class="small" onclick="editarCliente('${cliente.telefone}')">✏️ Editar</button>
+                        <button class="small danger" onclick="excluirCliente('${cliente.telefone}')">🗑️ Excluir</button>
+                    </div>
+                `;
+                
+                listaClientes.appendChild(item);
+            });
+        }
+
+        // Sistema de busca de clientes
+        function inicializarBuscaClientes() {
+            const campoBusca = document.getElementById('buscar-cliente');
+            const resultados = document.getElementById('resultados-busca');
+            const listaResultados = document.getElementById('lista-resultados');
+            
+            campoBusca.addEventListener('input', function() {
+                const termo = this.value.toLowerCase().trim();
+                
+                if (termo.length === 0) {
+                    resultados.style.display = 'none';
+                    return;
+                }
+                
+                // Filtrar clientes
+                const clientesFiltrados = dadosApp.clientes.filter(cliente => 
+                    cliente.nome.toLowerCase().includes(termo) || 
+                    cliente.telefone.includes(termo)
+                );
+                
+                if (clientesFiltrados.length === 0) {
+                    resultados.style.display = 'none';
+                    return;
+                }
+                
+                // Mostrar resultados
+                listaResultados.innerHTML = '';
+                clientesFiltrados.forEach(cliente => {
+                    const item = document.createElement('div');
+                    item.className = 'item-resultado';
+                    item.innerHTML = `
+                        <div class="cliente-nome">${cliente.nome}</div>
+                        <div class="cliente-telefone">${cliente.telefone}</div>
+                    `;
+                    item.addEventListener('click', () => {
+                        editarCliente(cliente.telefone);
+                        resultados.style.display = 'none';
+                        campoBusca.value = '';
+                    });
+                    listaResultados.appendChild(item);
+                });
+                
+                resultados.style.display = 'block';
+            });
+            
+            // Fechar resultados ao clicar fora
+            document.addEventListener('click', function(e) {
+                if (!campoBusca.contains(e.target) && !resultados.contains(e.target)) {
+                    resultados.style.display = 'none';
+                }
+            });
+        }
+
+        // Funções globais para editar e excluir clientes
+        window.editarCliente = function(telefone) {
+            const cliente = dadosApp.clientes.find(c => c.telefone === telefone);
+            if (cliente) {
+                // Preencher formulário com dados do cliente
+                document.getElementById('novo-cliente-nome').value = cliente.nome;
+                document.getElementById('novo-cliente-telefone').value = cliente.telefone;
+                document.getElementById('novo-cliente-email').value = cliente.email || '';
+                document.getElementById('novo-cliente-observacoes').value = cliente.observacoes || '';
+                
+                // Adicionar atributo para identificar que está editando
+                document.getElementById('salvar-cliente').setAttribute('data-editando', telefone);
+                document.getElementById('salvar-cliente').textContent = 'Atualizar Cliente';
+                
+                // Rolar a página para o topo do formulário de cadastro
+                document.getElementById('novo-cliente-nome').scrollIntoView({ 
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+                
+                alert('Cliente carregado para edição. Faça as alterações e clique em "Atualizar Cliente".');
+            }
+        };
+
+        window.excluirCliente = function(telefone) {
+            if (confirm('Tem certeza que deseja excluir este cliente?')) {
+                dadosApp.clientes = dadosApp.clientes.filter(c => c.telefone !== telefone);
+                salvarDados();
+                carregarListaClientes();
+                alert('Cliente excluído com sucesso!');
+            }
+        };
+
+        // Limpar formulário de cliente
+        function limparFormularioCliente() {
+            document.getElementById('novo-cliente-nome').value = '';
+            document.getElementById('novo-cliente-telefone').value = '';
+            document.getElementById('novo-cliente-email').value = '';
+            document.getElementById('novo-cliente-observacoes').value = '';
+            document.getElementById('salvar-cliente').removeAttribute('data-editando');
+            document.getElementById('salvar-cliente').textContent = 'Salvar Cliente';
+        }
+
+        // Salvar cliente
+        function salvarCliente() {
+            const nome = document.getElementById('novo-cliente-nome').value;
+            const telefone = document.getElementById('novo-cliente-telefone').value;
+            const email = document.getElementById('novo-cliente-email').value;
+            const observacoes = document.getElementById('novo-cliente-observacoes').value;
+            const editandoTelefone = document.getElementById('salvar-cliente').getAttribute('data-editando');
+            
+            if (!nome || !telefone) {
+                alert('Por favor, preencha pelo menos nome e telefone.');
+                return;
+            }
+            
+            if (editandoTelefone) {
+                // Modo edição - atualizar cliente existente
+                const clienteIndex = dadosApp.clientes.findIndex(c => c.telefone === editandoTelefone);
+                if (clienteIndex !== -1) {
+                    dadosApp.clientes[clienteIndex] = {
+                        nome: nome,
+                        telefone: telefone,
+                        email: email,
+                        observacoes: observacoes,
+                        dataCadastro: dadosApp.clientes[clienteIndex].dataCadastro // Mantém a data original
+                    };
+                }
+            } else {
+                // Modo novo cliente - verificar se já existe
+                const clienteExistente = dadosApp.clientes.find(c => c.telefone === telefone);
+                if (clienteExistente) {
+                    alert('Já existe um cliente cadastrado com este telefone.');
+                    return;
+                }
+                
+                // Adicionar novo cliente
+                dadosApp.clientes.push({
+                    nome: nome,
+                    telefone: telefone,
+                    email: email,
+                    observacoes: observacoes,
+                    dataCadastro: new Date().toISOString()
+                });
+            }
+            
+            salvarDados();
+            limparFormularioCliente();
+            carregarListaClientes();
+            alert(editandoTelefone ? 'Cliente atualizado com sucesso!' : 'Cliente cadastrado com sucesso!');
+        }
+
+        // Funções de estatísticas - CORRIGIDA
+        function atualizarEstatisticas() {
+            const hoje = new Date();
+            const inicioDia = new Date(hoje.getFullYear(), hoje.getMonth(), hoje.getDate());
+            const inicioSemana = new Date(hoje);
+            inicioSemana.setDate(hoje.getDate() - hoje.getDay());
+            const inicioMes = new Date(hoje.getFullYear(), hoje.getMonth(), 1);
+            const inicioAno = new Date(hoje.getFullYear(), 0, 1);
+
+            let ganhosHoje = 0;
+            let ganhosSemana = 0;
+            let ganhosMes = 0;
+            let ganhosAno = 0;
+
+            dadosApp.orcamentos.forEach(orcamento => {
+                const dataOrcamento = new Date(orcamento.data);
+                const valor = orcamento.total;
+
+                // Só conta orçamentos realizados ou entregues
+                if (orcamento.status === 'realizado' || orcamento.status === 'entregue') {
+                    // Hoje
+                    if (dataOrcamento >= inicioDia) {
+                        ganhosHoje += valor;
+                    }
+                    
+                    // Esta semana
+                    if (dataOrcamento >= inicioSemana) {
+                        ganhosSemana += valor;
+                    }
+                    
+                    // Este mês
+                    if (dataOrcamento >= inicioMes) {
+                        ganhosMes += valor;
+                    }
+                    
+                    // Este ano
+                    if (dataOrcamento >= inicioAno) {
+                        ganhosAno += valor;
+                    }
+                }
+            });
+
+            // Atualizar os valores na interface
+            document.getElementById('ganhos-hoje').textContent = `R$ ${ganhosHoje.toFixed(2)}`;
+            document.getElementById('ganhos-semana').textContent = `R$ ${ganhosSemana.toFixed(2)}`;
+            document.getElementById('ganhos-mes').textContent = `R$ ${ganhosMes.toFixed(2)}`;
+            document.getElementById('ganhos-ano').textContent = `R$ ${ganhosAno.toFixed(2)}`;
+            
+            // Contadores de status (já funcionavam)
+            const pendentes = dadosApp.orcamentos.filter(o => o.status === 'pendente').length;
+            const realizados = dadosApp.orcamentos.filter(o => o.status === 'realizado').length;
+            const entregues = dadosApp.orcamentos.filter(o => o.status === 'entregue').length;
+            
+            document.getElementById('servicos-pendentes').textContent = pendentes;
+            document.getElementById('servicos-realizados').textContent = realizados;
+            document.getElementById('servicos-entregues').textContent = entregues;
+            document.getElementById('servicos-total').textContent = dadosApp.orcamentos.length;
+        }
+
+        // Salvar dados da oficina
+        function salvarDadosOficina() {
+            dadosApp.oficina.nome = document.getElementById('oficina-nome').value || "🚗 OficinaPro";
+            dadosApp.oficina.cnpj = document.getElementById('oficina-cnpj').value;
+            dadosApp.oficina.endereco = document.getElementById('oficina-endereco').value;
+            dadosApp.oficina.numero = document.getElementById('oficina-numero').value;
+            dadosApp.oficina.bairro = document.getElementById('oficina-bairro').value;
+            dadosApp.oficina.telefone = document.getElementById('oficina-telefone').value;
+            dadosApp.oficina.email = document.getElementById('oficina-email').value;
+            
+            document.getElementById('app-title').textContent = dadosApp.oficina.nome;
+            salvarDados();
+            alert('Dados da oficina salvos com sucesso!');
+        }
+
+        // Exportar/importar dados
+        function exportarDados() {
+            const dadosExport = JSON.stringify(dadosApp, null, 2);
+            const blob = new Blob([dadosExport], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'oficina-pro-backup.json';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        function importarDados() {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = '.json';
+            
+            input.onchange = e => {
+                const file = e.target.files[0];
+                const reader = new FileReader();
+                
+                reader.onload = function(event) {
+                    try {
+                        const dadosImportados = JSON.parse(event.target.result);
+                        dadosApp = dadosImportados;
+                        salvarDados();
+                        carregarDados();
+                        atualizarInterface();
+                        alert('Dados importados com sucesso!');
+                    } catch (error) {
+                        alert('Erro ao importar dados. Verifique se o arquivo é válido.');
+                    }
+                };
+                
+                reader.readAsText(file);
+            };
+            
+            input.click();
+        }
+
+        function limparDados() {
+            if (confirm('Tem certeza que deseja limpar todos os dados? Esta ação não pode ser desfeita.')) {
+                localStorage.removeItem('oficinaPro');
+                dadosApp = {
+                    orcamentos: [],
+                    clientes: [],
+                    oficina: {
+                        nome: "🚗 OficinaPro",
+                        cnpj: "",
+                        endereco: "",
+                        numero: "",
+                        bairro: "",
+                        telefone: "",
+                        email: ""
+                    },
+                    configuracoes: {
+                        tema: "light",
+                        tamanhoFonte: 16
+                    }
+                };
+                
+                carregarDados();
+                atualizarInterface();
+                alert('Todos os dados foram removidos.');
+            }
+        }
+
+        // Atualizar interface
+        function atualizarInterface() {
+            carregarListaOrcamentos();
+            carregarListaClientes();
+            atualizarEstatisticas();
+        }
+
+        // Gerar PDF Orçamento
+        function gerarPDFOrcamento(orcamento) {
+            const pdfContent = `
+                <div class="pdf-container" style="color: #000000 !important;">
+                    <div class="pdf-header" style="color: #000000 !important;">
+                        <div class="pdf-title" style="color: #000000 !important;">ORÇAMENTO DE SERVIÇOS</div>
+                        <div class="pdf-subtitle" style="color: #000000 !important;">${dadosApp.oficina.nome}</div>
+                        <div style="color: #000000 !important;">${dadosApp.oficina.endereco}, ${dadosApp.oficina.numero} - ${dadosApp.oficina.bairro}</div>
+                        <div style="color: #000000 !important;">Tel: ${dadosApp.oficina.telefone} | CNPJ/CPF: ${dadosApp.oficina.cnpj}</div>
+                    </div>
+
+                    <div class="pdf-section" style="color: #000000 !important;">
+                        <div class="pdf-section-title" style="color: #000000 !important;">DADOS DO CLIENTE</div>
+                        <table style="width: 100%; color: #000000 !important;">
+                            <tr>
+                                <td style="color: #000000 !important;"><strong>Nome:</strong> ${orcamento.cliente.nome}</td>
+                                <td style="color: #000000 !important;"><strong>Telefone:</strong> ${orcamento.cliente.telefone}</td>
+                            </tr>
+                            <tr>
+                                <td colspan="2" style="color: #000000 !important;"><strong>Endereço:</strong> ${orcamento.cliente.endereco}, ${orcamento.cliente.numero} - ${orcamento.cliente.bairro}</td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <div class="pdf-section" style="color: #000000 !important;">
+                        <div class="pdf-section-title" style="color: #000000 !important;">DADOS DO VEÍCULO</div>
+                        <table style="width: 100%; color: #000000 !important;">
+                            <tr>
+                                <td style="color: #000000 !important;"><strong>Marca/Modelo:</strong> ${orcamento.veiculo.marca} ${orcamento.veiculo.modelo}</td>
+                                <td style="color: #000000 !important;"><strong>Placa:</strong> ${orcamento.veiculo.placa || 'NÃO INFORMADA'}</td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <div class="pdf-section" style="color: #000000 !important;">
+                        <div class="pdf-section-title" style="color: #000000 !important;">SERVIÇOS E PEÇAS</div>
+                        <table class="pdf-table" style="color: #000000 !important;">
+                            <thead>
+                                <tr>
+                                    <th style="color: #ffffff !important; background-color: #34495e !important;">Descrição</th>
+                                    <th style="color: #ffffff !important; background-color: #34495e !important;">Qtd</th>
+                                    <th style="color: #ffffff !important; background-color: #34495e !important;">Valor Unit.</th>
+                                    <th style="color: #ffffff !important; background-color: #34495e !important;">Subtotal</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${orcamento.servicos.map(servico => `
+                                    <tr>
+                                        <td style="color: #000000 !important;">${servico.descricao}${servico.clienteAdquire ? ' (PEÇA DO CLIENTE)' : ''}</td>
+                                        <td style="color: #000000 !important;">${servico.quantidade}</td>
+                                        <td style="color: #000000 !important;">R$ ${servico.valorUnitario.toFixed(2)}</td>
+                                        <td style="color: #000000 !important;">${servico.clienteAdquire ? 'R$ 0,00' : `R$ ${servico.subtotal.toFixed(2)}`}</td>
+                                    </tr>
+                                `).join('')}
+                                <tr>
+                                    <td colspan="3" style="text-align: right; color: #000000 !important;"><strong>Mão de Obra:</strong></td>
+                                    <td style="color: #000000 !important;"><strong>R$ ${orcamento.maoObra.toFixed(2)}</strong></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="pdf-total" style="color: #000000 !important;">
+                        TOTAL DO ORÇAMENTO: R$ ${orcamento.total.toFixed(2)}
+                    </div>
+
+                    ${orcamento.garantia ? `
+                    <div class="pdf-garantia" style="color: #000000 !important;">
+                        <strong>GARANTIA:</strong> ${orcamento.garantia}
+                    </div>
+                    ` : ''}
+
+                    ${orcamento.observacoes ? `
+                    <div class="pdf-section" style="color: #000000 !important;">
+                        <div class="pdf-section-title" style="color: #000000 !important;">OBSERVAÇÕES</div>
+                        <p style="color: #000000 !important;">${orcamento.observacoes}</p>
+                    </div>
+                    ` : ''}
+
+                    <div class="pdf-section" style="color: #000000 !important;">
+                        <div class="pdf-section-title" style="color: #000000 !important;">VALIDADE DO ORÇAMENTO</div>
+                        <p style="color: #000000 !important;">Este orçamento tem validade de 7 (sete) dias a partir da data de emissão.</p>
+                    </div>
+
+                    <div class="pdf-assinaturas" style="color: #000000 !important;">
+                        <div class="pdf-assinatura" style="color: #000000 !important;">
+                            <div>___________________________________</div>
+                            <div style="color: #000000 !important;">${dadosApp.oficina.nome}</div>
+                            <div style="color: #000000 !important;">Responsável Técnico</div>
+                        </div>
+                        <div class="pdf-assinatura" style="color: #000000 !important;">
+                            <div>___________________________________</div>
+                            <div style="color: #000000 !important;">Cliente</div>
+                            <div style="color: #000000 !important;">Concorda com o orçamento</div>
+                        </div>
+                    </div>
+
+                    <div style="text-align: center; margin-top: 30px; font-size: 12px; color: #000000 !important;">
+                        Emitido em: ${new Date(orcamento.data).toLocaleDateString('pt-BR')} às ${new Date(orcamento.data).toLocaleTimeString('pt-BR')}
+                    </div>
+                </div>
+            `;
+            
+            return pdfContent;
+        }
+
+        // Gerar PDF Serviço Concluído
+        function gerarPDFServicoConcluido(orcamento) {
+            const pdfContent = `
+                <div class="pdf-container" style="color: #000000 !important;">
+                    <div class="pdf-header" style="color: #000000 !important;">
+                        <div class="pdf-title" style="color: #000000 !important;">TERMO DE SERVIÇO CONCLUÍDO</div>
+                        <div class="pdf-subtitle" style="color: #000000 !important;">${dadosApp.oficina.nome}</div>
+                        <div style="color: #000000 !important;">${dadosApp.oficina.endereco}, ${dadosApp.oficina.numero} - ${dadosApp.oficina.bairro}</div>
+                        <div style="color: #000000 !important;">Tel: ${dadosApp.oficina.telefone} | CNPJ/CPF: ${dadosApp.oficina.cnpj}</div>
+                    </div>
+
+                    <div class="pdf-section" style="color: #000000 !important;">
+                        <div class="pdf-section-title" style="color: #000000 !important;">DADOS DO CLIENTE</div>
+                        <table style="width: 100%; color: #000000 !important;">
+                            <tr>
+                                <td style="color: #000000 !important;"><strong>Nome:</strong> ${orcamento.cliente.nome}</td>
+                                <td style="color: #000000 !important;"><strong>Telefone:</strong> ${orcamento.cliente.telefone}</td>
+                            </tr>
+                            <tr>
+                                <td colspan="2" style="color: #000000 !important;"><strong>Endereço:</strong> ${orcamento.cliente.endereco}, ${orcamento.cliente.numero} - ${orcamento.cliente.bairro}</td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <div class="pdf-section" style="color: #000000 !important;">
+                        <div class="pdf-section-title" style="color: #000000 !important;">DADOS DO VEÍCULO</div>
+                        <table style="width: 100%; color: #000000 !important;">
+                            <tr>
+                                <td style="color: #000000 !important;"><strong>Marca/Modelo:</strong> ${orcamento.veiculo.marca} ${orcamento.veiculo.modelo}</td>
+                                <td style="color: #000000 !important;"><strong>Placa:</strong> ${orcamento.veiculo.placa || 'NÃO INFORMADA'}</td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <div class="pdf-section" style="color: #000000 !important;">
+                        <div class="pdf-section-title" style="color: #000000 !important;">SERVIÇOS REALIZADOS</div>
+                        <table class="pdf-table" style="color: #000000 !important;">
+                            <thead>
+                                <tr>
+                                    <th style="color: #ffffff !important; background-color: #34495e !important;">Descrição</th>
+                                    <th style="color: #ffffff !important; background-color: #34495e !important;">Qtd</th>
+                                    <th style="color: #ffffff !important; background-color: #34495e !important;">Valor Unit.</th>
+                                    <th style="color: #ffffff !important; background-color: #34495e !important;">Subtotal</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${orcamento.servicos.map(servico => `
+                                    <tr>
+                                        <td style="color: #000000 !important;">${servico.descricao}${servico.clienteAdquire ? ' (PEÇA DO CLIENTE)' : ''}</td>
+                                        <td style="color: #000000 !important;">${servico.quantidade}</td>
+                                        <td style="color: #000000 !important;">R$ ${servico.valorUnitario.toFixed(2)}</td>
+                                        <td style="color: #000000 !important;">${servico.clienteAdquire ? 'R$ 0,00' : `R$ ${servico.subtotal.toFixed(2)}`}</td>
+                                    </tr>
+                                `).join('')}
+                                <tr>
+                                    <td colspan="3" style="text-align: right; color: #000000 !important;"><strong>Mão de Obra:</strong></td>
+                                    <td style="color: #000000 !important;"><strong>R$ ${orcamento.maoObra.toFixed(2)}</strong></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="pdf-total" style="color: #000000 !important;">
+                        VALOR TOTAL: R$ ${orcamento.total.toFixed(2)}
+                    </div>
+
+                    <div class="pdf-section" style="color: #000000 !important;">
+                        <div class="pdf-section-title" style="color: #000000 !important;">TERMO DE GARANTIA</div>
+                        <div class="pdf-garantia" style="color: #000000 !important;">
+                            <p style="color: #000000 !important;"><strong>PERÍODO DE GARANTIA:</strong> ${orcamento.garantia || 'NÃO APLICÁVEL'}</p>
+                            <p style="color: #000000 !important;"><strong>COBERTURA DA GARANTIA:</strong></p>
+                            <ul style="color: #000000 !important;">
+                                <li style="color: #000000 !important;">Mão de obra executada pela ${dadosApp.oficina.nome}</li>
+                                <li style="color: #000000 !important;">Peças fornecidas pela oficina (exceto peças adquiridas pelo cliente)</li>
+                                <li style="color: #000000 !important;">Defeitos de fabricação ou instalação</li>
+                            </ul>
+                            <p style="color: #000000 !important;"><strong>CONDIÇÕES DA GARANTIA:</strong></p>
+                            <ul style="color: #000000 !important;">
+                                <li style="color: #000000 !important;">Garantia válida apenas para o serviço descrito neste termo</li>
+                                <li style="color: #000000 !important;">Necessária apresentação deste documento para acionar a garantia</li>
+                                <li style="color: #000000 !important;">Não cobre danos por acidentes, má utilização ou modificações não autorizadas</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    ${orcamento.observacoesConclusao ? `
+                    <div class="pdf-section" style="color: #000000 !important;">
+                        <div class="pdf-section-title" style="color: #000000 !important;">OBSERVAÇÕES DA CONCLUSÃO</div>
+                        <p style="color: #000000 !important;">${orcamento.observacoesConclusao}</p>
+                    </div>
+                    ` : ''}
+
+                    <div class="pdf-section" style="color: #000000 !important;">
+                        <div class="pdf-section-title" style="color: #000000 !important;">INSTRUÇÕES PÓS-SERVIÇO</div>
+                        <ul style="color: #000000 !important;">
+                            <li style="color: #000000 !important;">Realizar a primeira revisão após 1.000 km ou 30 dias</li>
+                            <li style="color: #000000 !important;">Observar vazamentos ou ruídos anormais</li>
+                            <li style="color: #000000 !important;">Manter a manutenção preventiva em dia</li>
+                            <li style="color: #000000 !important;">Em caso de problemas, entrar em contato imediatamente</li>
+                        </ul>
+                    </div>
+
+                    <div class="pdf-assinaturas" style="color: #000000 !important;">
+                        <div class="pdf-assinatura" style="color: #000000 !important;">
+                            <div class="pdf-linha-assinatura" style="border-top: 1px solid #000000 !important;"></div>
+                            <div style="color: #000000 !important;">${dadosApp.oficina.nome}</div>
+                            <div style="color: #000000 !important;">Responsável Técnico</div>
+                            <div style="color: #000000 !important;">Data: ${new Date(orcamento.dataConclusao).toLocaleDateString('pt-BR')}</div>
+                        </div>
+                        <div class="pdf-assinatura" style="color: #000000 !important;">
+                            <div class="pdf-linha-assinatura" style="border-top: 1px solid #000000 !important;"></div>
+                            <div style="color: #000000 !important;">Cliente</div>
+                            <div style="color: #000000 !important;">Concorda com o serviço realizado</div>
+                            <div style="color: #000000 !important;">Data: ____________________</div>
+                        </div>
+                    </div>
+
+                    <div style="text-align: center; margin-top: 30px; font-size: 12px; color: #000000 !important;">
+                        Serviço concluído em: ${new Date(orcamento.dataConclusao).toLocaleDateString('pt-BR')}
+                    </div>
+                </div>
+            `;
+            
+            return pdfContent;
+        }
+
+        // Mostrar PDF
+        window.mostrarPDF = function(orcamento, tipo) {
+            const pdfContent = tipo === 'orcamento' 
+                ? gerarPDFOrcamento(orcamento)
+                : gerarPDFServicoConcluido(orcamento);
+            
+            document.getElementById('pdf-preview').innerHTML = pdfContent;
+            pdfAtual = { orcamento, tipo };
+            document.getElementById('modal-pdf').style.display = 'flex';
+        };
+
+        // Enviar PDF WhatsApp
+        function enviarPDFWhatsApp() {
+            if (!pdfAtual) return;
+            
+            const telefone = pdfAtual.orcamento.cliente.telefone;
+            const tipo = pdfAtual.tipo;
+            const titulo = tipo === 'orcamento' ? 'ORÇAMENTO' : 'TERMO DE SERVIÇO CONCLUÍDO';
+            
+            let mensagem = `*${titulo} - ${dadosApp.oficina.nome}*\n\n`;
+            mensagem += `*Cliente:* ${pdfAtual.orcamento.cliente.nome}\n`;
+            mensagem += `*Veículo:* ${pdfAtual.orcamento.veiculo.marca} ${pdfAtual.orcamento.veiculo.modelo}\n`;
+            mensagem += `*Placa:* ${pdfAtual.orcamento.veiculo.placa || 'NÃO INFORMADA'}\n`;
+            mensagem += `*Total:* R$ ${pdfAtual.orcamento.total.toFixed(2)}\n\n`;
+            
+            if (tipo === 'servico-concluido') {
+                mensagem += `*Data de Conclusão:* ${new Date(pdfAtual.orcamento.dataConclusao).toLocaleDateString('pt-BR')}\n`;
+                mensagem += `*Garantia:* ${pdfAtual.orcamento.garantia || 'NÃO APLICÁVEL'}\n\n`;
+            }
+            
+            mensagem += `_Este é um resumo. Consulte o documento completo para detalhes._`;
+            
+            const mensagemCodificada = encodeURIComponent(mensagem);
+            window.open(`https://wa.me/55${telefone.replace(/\D/g, '')}?text=${mensagemCodificada}`, '_blank');
+        }
+
+    </script>
+</body>
+</html>
